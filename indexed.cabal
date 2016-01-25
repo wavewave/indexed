@@ -34,7 +34,7 @@ library
   exposed-modules:
     Indexed.Command
     Indexed.Constraints
-    Indexed.Comonad.Store
+    -- Indexed.Comonad.Store
     Indexed.Coproduct
     Indexed.Foldable
     Indexed.Functor
