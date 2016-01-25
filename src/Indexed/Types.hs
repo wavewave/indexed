@@ -6,7 +6,7 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE Trustworthy #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveDataTypeable, FlexibleContexts, UndecidableInstances #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Indexed.Types
@@ -21,7 +21,7 @@
 module Indexed.Types
   (
   -- * Natural Transformations
-    (~>)()
+    type (~>)()
   , (:~>)(Nat,($$))
   -- * Limits
   , Lim
@@ -139,7 +139,7 @@ instance (Monoid m, i ~ j) => Monoid (At m i j) where
 -- | Type alias for indexed monads, functors, etc. in Bob Atkey's style.
 type Atkey f i j a = f (At a j) i
 
-instance (Data a, Typeable i, i ~ j) => Data (At a i j) where
+instance (Data a, Typeable (At a i j), i ~ j) => Data (At a i j) where
   gfoldl f z (At a) = z At `f` a
   toConstr _ = atConstr
   gunfold k z c = case constrIndex c of
@@ -190,7 +190,7 @@ uncoat (Coat a) = a
 -- | Type alias for indexed monads, functors, etc. in Bob Atkey's style.
 type Coatkey f i j a = f (Coat a j) i
 
-instance (Data a, Typeable i, i ~ j) => Data (Coat a i j) where
+instance (Data a, Typeable (Coat a i j), i ~ j) => Data (Coat a i j) where
   gfoldl f z (Coat a) = z (\x -> Coat x) `f` a
   toConstr _ = coatConstr
   gunfold k z c = case constrIndex c of
